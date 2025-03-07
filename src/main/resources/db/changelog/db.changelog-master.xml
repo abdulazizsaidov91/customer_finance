@@ -1,0 +1,30 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="001-create-users" author="Saidov.A">
+        <sqlFile path="db/changelog/scripts/V1__create_users.sql"/>
+    </changeSet>
+
+    <changeSet id="002-create-roles" author="Saidov.A">
+        <sqlFile path="db/changelog/scripts/V2__create_roles.sql"/>
+    </changeSet>
+
+    <changeSet id="003-create-user-role" author="Saidov.A">
+        <sqlFile path="db/changelog/scripts/V3__create_user_role.sql"/>
+    </changeSet>
+
+    <changeSet id="004-create-customers" author="Saidov.A">
+        <sqlFile path="db/changelog/scripts/V4__create_customers.sql"/>
+    </changeSet>
+
+    <changeSet id="005-create-transactions" author="Saidov.A">
+        <sqlFile path="db/changelog/scripts/V5__create_transactions.sql"/>
+    </changeSet>
+
+    <changeSet id="006-create-refresh-token" author="Saidov.A">
+        <sqlFile path="db/changelog/scripts/V6__create_refresh_token.sql"/>
+    </changeSet>
+</databaseChangeLog>
