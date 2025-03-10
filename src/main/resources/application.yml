@@ -13,7 +13,7 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
-    show-sql: true
+    show-sql: false
     properties:
       hibernate.connection.isolation: 2 # 2 = READ COMMITTED
       hibernate.default_schema: finance
@@ -28,5 +28,6 @@ jwt:
 
 logging:
   level:
-    org.springframework.security: DEBUG
+    root: INFO
+    com.is.customerfinance.filter.RequestResponseLoggingFilter: DEBUG
 
