@@ -6,7 +6,7 @@ server:
 
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/finance_db
+    url: jdbc:postgresql://pg_container:5432/finance_db
     username: admin
     password: iV$8%Omr
     driver-class-name: org.postgresql.Driver
