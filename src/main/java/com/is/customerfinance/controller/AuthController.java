@@ -7,9 +7,10 @@ import com.is.customerfinance.dto.response.AuthResponse;
 import com.is.customerfinance.exception.AuthException;
 import com.is.customerfinance.filter.JwtService;
 import com.is.customerfinance.model.RefreshToken;
-import com.is.customerfinance.repository.UserRepository;
 import com.is.customerfinance.service.CustomUserDetailsService;
 import com.is.customerfinance.service.RefreshTokenService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -26,12 +27,14 @@ import java.util.Locale;
 @RestController
 @RequestMapping("/api/public")
 @RequiredArgsConstructor
+@Tag(name = "01. Методы аутентификации", description = "Методы аутентификации")
 public class AuthController {
     private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
     private final CustomUserDetailsService userDetailsService;
     private final RefreshTokenService refreshTokenService;
 
+    @Operation(summary = "Получение токена", description = "Получение токена авторизации")
     @PostMapping("/authenticate")
     public ResponseEntity<AuthResponse> authenticate(@RequestBody AuthRequest request, Locale locale) {
         try {
@@ -49,6 +52,7 @@ public class AuthController {
         }
     }
 
+    @Operation(summary = "Обновление токена", description = "Обновление токена авторизации")
     @PostMapping("/refresh")
     public ResponseEntity<AuthResponse> refresh(@RequestBody RefreshTokenRequest request) {
         RefreshToken refreshToken = refreshTokenService.findByToken(request.getRefreshToken())
@@ -58,22 +62,19 @@ public class AuthController {
             refreshTokenService.deleteByUserId(refreshToken.getUser().getId());
             throw new RuntimeException("Refresh token expired. Please log in again.");
         }
-
         String accessToken = jwtService.generateToken(
                 userDetailsService.loadUserByUsername(refreshToken.getUser().getUsername()),
                 refreshToken.getUser().getId()
         );
-
         return ResponseEntity.ok(new AuthResponse(accessToken, request.getRefreshToken()));
     }
 
+    @Operation(summary = "Выход", description = "Выход из системы")
     @PostMapping("/logout")
     public ResponseEntity<String> logout(@RequestBody RefreshTokenRequest request) {
         RefreshToken refreshToken = refreshTokenService.findByToken(request.getRefreshToken())
                 .orElseThrow(() -> new RuntimeException("Invalid refresh token"));
-
         refreshTokenService.deleteByUserId(refreshToken.getUser().getId());
-
         return ResponseEntity.ok("Logout successful");
     }
 }

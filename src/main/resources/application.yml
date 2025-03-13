@@ -21,6 +21,11 @@ spring:
     change-log: classpath:db/changelog/db.changelog-master.xml
     default-schema: liquebase
 
+springdoc:
+  swagger-ui:
+    tagsSorter: "alpha"
+    operationsSorter: "alpha"
+
 jwt:
   secret: GVN0GW/NDhnUnFRu9G8a1LhFH8A65nEWRrvNd93I4mc=
   acccess-token-expiration: 1800000
