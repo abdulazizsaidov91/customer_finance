@@ -1,5 +1,6 @@
 package com.is.customerfinance.service;
 
+import com.is.customerfinance.annatation.ReadTransactional;
 import com.is.customerfinance.configuration.CustomUserDetails;
 import com.is.customerfinance.model.User;
 import com.is.customerfinance.repository.UserRepository;
@@ -20,6 +21,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     private final UserRepository userRepository;
 
     @Override
+    @ReadTransactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));

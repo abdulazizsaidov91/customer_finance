@@ -8,7 +8,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
-public class BadAuthResponse {
+public class BaseBadException {
     private final String error;
     @JsonProperty("error_description")
     private final String errorDescription;

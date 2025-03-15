@@ -23,11 +23,25 @@ public class SecurityConfig {
     private final CustomUserDetailsService userDetailsService;
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
-    private static final String[] WHITE_ENDPOINTS = {"/index", "/swagger-ui/**", "/swagger-ui.html", "/v3/**", "/api/public/**"};
+    private static final String[] WHITE_ENDPOINTS = {
+            "/",
+            "/swagger-ui/**",
+            "/swagger-ui.html",
+            "/v3/**",
+            "/api/public/**"};
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        return http.csrf(AbstractHttpConfigurer::disable).sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)).authorizeHttpRequests(auth -> auth.requestMatchers(WHITE_ENDPOINTS).permitAll().requestMatchers("/").permitAll().requestMatchers("/api/private/transactions/debit/**", "/api/private/transactions/credit/**").hasAnyRole("ADMIN", "CASHIER").requestMatchers("/api/private/**").authenticated().anyRequest().denyAll()).addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class).userDetailsService(userDetailsService).build();
+        return http.csrf(AbstractHttpConfigurer::disable)
+                .sessionManagement(session ->
+                        session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authorizeHttpRequests(auth -> auth.requestMatchers(WHITE_ENDPOINTS).permitAll()
+                        .requestMatchers("/api/private/transactions/debit/**", "/api/private/transactions/credit/**")
+                        .hasAnyRole("ADMIN", "CASHIER")
+                        .requestMatchers("/api/private/**")
+                        .authenticated()
+                )
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class).userDetailsService(userDetailsService).build();
     }
 
     @Bean

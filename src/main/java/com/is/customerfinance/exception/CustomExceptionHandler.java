@@ -1,6 +1,6 @@
 package com.is.customerfinance.exception;
 
-import com.is.customerfinance.dto.response.BadAuthResponse;
+import com.is.customerfinance.dto.response.BaseBadException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.Ordered;
@@ -17,9 +17,9 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @Slf4j
 @RequiredArgsConstructor
 public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
-    @ExceptionHandler(AuthException.class)
+    @ExceptionHandler(BadRequestException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public BadAuthResponse dataNotFound(AuthException e) {
-        return new BadAuthResponse(e.getError(), e.getErrorDescription());
+    public BaseBadException badRequest(BadRequestException e) {
+        return new BaseBadException(e.getError(), e.getErrorDescription());
     }
 }

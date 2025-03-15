@@ -1,0 +1,31 @@
+version: "3.8"
+
+services:
+  customer-finance:
+    image: customer-finance
+    container_name: customer-finance-container
+    build: .
+    ports:
+      - "8081:8081"
+    environment:
+      - OTEL_EXPORTER_OTLP_ENDPOINT=http://jaeger:4317
+      - OTEL_SERVICE_NAME=customer-finance
+    networks:
+      - finance_network
+    depends_on:
+      - jaeger
+
+  jaeger:
+    image: jaegertracing/all-in-one:1.52
+    container_name: jaeger
+    ports:
+      - "16686:16686"  # UI
+      - "14250:14250"  # gRPC API
+      - "14268:14268"  # HTTP API
+    networks:
+      - finance_network
+
+networks:
+  finance_network:
+    name: finance_network
+    external: true

@@ -9,12 +9,12 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @Getter
 @Setter
 @ResponseStatus(value = HttpStatus.BAD_REQUEST)
-public class AuthException extends RuntimeException {
+public class BadRequestException extends RuntimeException {
     private final String error;
     @JsonProperty("error_description")
     private final String errorDescription;
 
-    public AuthException(String error, String errorDescription) {
+    public BadRequestException(String error, String errorDescription) {
         this.error = error;
         this.errorDescription = errorDescription;
     }

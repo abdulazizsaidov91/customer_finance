@@ -4,7 +4,7 @@ import com.is.customerfinance.configuration.CustomUserDetails;
 import com.is.customerfinance.dto.request.AuthRequest;
 import com.is.customerfinance.dto.request.RefreshTokenRequest;
 import com.is.customerfinance.dto.response.AuthResponse;
-import com.is.customerfinance.exception.AuthException;
+import com.is.customerfinance.exception.BadRequestException;
 import com.is.customerfinance.filter.JwtService;
 import com.is.customerfinance.model.RefreshToken;
 import com.is.customerfinance.service.CustomUserDetailsService;
@@ -48,7 +48,7 @@ public class AuthController {
 
             return ResponseEntity.ok(new AuthResponse(accessToken, refreshToken.getToken()));
         } catch (AuthenticationException e) {
-            throw new AuthException("access_denied", "wrong username or password");
+            throw new BadRequestException("access_denied", "wrong username or password");
         }
     }
 

@@ -1,5 +1,6 @@
 package com.is.customerfinance.controller;
 
+import com.is.customerfinance.dto.request.UserCreateRequest;
 import com.is.customerfinance.model.User;
 import com.is.customerfinance.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -34,8 +35,8 @@ public class UserController {
 
     @Operation(summary = "Создание", description = "Создание пользователя")
     @PostMapping
-    public ResponseEntity<User> createUser(@RequestBody User user) {
-        return ResponseEntity.ok(userService.createUser(user));
+    public ResponseEntity<User> createUser(@RequestBody UserCreateRequest request) {
+        return ResponseEntity.ok(userService.createUser(request));
     }
 
     @Operation(summary = "Изменение", description = "Изменение данных пользователя по ID")

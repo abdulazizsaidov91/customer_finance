@@ -27,4 +27,8 @@
     <changeSet id="006-create-refresh-token" author="Saidov.A">
         <sqlFile path="db/changelog/scripts/V6__create_refresh_token.sql"/>
     </changeSet>
+
+    <changeSet id="007-insert-user-role-userrole" author="Saidov.A">
+        <sqlFile path="db/changelog/scripts/V7__insert_user_role_userrole.sql"/>
+    </changeSet>
 </databaseChangeLog>

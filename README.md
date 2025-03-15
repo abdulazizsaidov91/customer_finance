@@ -45,9 +45,12 @@ Customer Finance API — это RESTful сервис для управления
 - **PostgreSQL** (База данных)
 - **Liquibase** (Миграции)
 - **Swagger** (Документация API) (http://serverIP:8081/customer_finance/swagger-ui/index.html)
+- **Jeager**  (Трассировка) 
 
 ## 🚀 Запуск проекта
 
 1. Склонируйте репозиторий:
    ```bash
    git clone https://github.com/abdulazizsaidov91/customer_finance.git
+   
+## Ползователь по умолчанию "ADMIN"
