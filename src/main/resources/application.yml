@@ -18,8 +18,9 @@ spring:
       hibernate.connection.isolation: 2 # 2 = READ COMMITTED
       hibernate.default_schema: finance
   liquibase:
+    liquibase-schema: public
+    default-schema: public
     change-log: classpath:db/changelog/db.changelog-master.xml
-    default-schema: liquibase
   autoconfigure:
     exclude: io.opentelemetry.instrumentation.spring.autoconfigure.instrumentation.annotations.InstrumentationAnnotationsAutoConfiguration
 

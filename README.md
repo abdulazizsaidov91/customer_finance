@@ -53,4 +53,4 @@ Customer Finance API — это RESTful сервис для управления
    ```bash
    git clone https://github.com/abdulazizsaidov91/customer_finance.git
    
-## Ползователь по умолчанию "ADMIN"
+## Ползователь по умолчанию "ADMIN" и создается при запуске проиложение
