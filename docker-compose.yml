@@ -1,31 +1,52 @@
 version: "3.8"
 
 services:
-  customer-finance:
-    image: customer-finance
-    container_name: customer-finance-container
-    build: .
-    ports:
-      - "8081:8081"
+  postgres:
+    image: postgres:15
+    container_name: pg_container
+    restart: always
     environment:
-      - OTEL_EXPORTER_OTLP_ENDPOINT=http://jaeger:4317
-      - OTEL_SERVICE_NAME=customer-finance
+      POSTGRES_DB: finance_db
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: iV$8%Omr
+    ports:
+      - "5432:5432"
+    volumes:
+      - pg_data:/var/lib/postgresql/data  # Сохраняем данные БД между перезапусками
+      - ./docker/postgres/init.sql:/docker-entrypoint-initdb.d/init.sql # Инициализация БД
     networks:
       - finance_network
+
+  customer-finance:
+    build: .
+    container_name: customer-finance-container
     depends_on:
-      - jaeger
+      - postgres
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/finance_db
+      SPRING_DATASOURCE_USERNAME: admin
+      SPRING_DATASOURCE_PASSWORD: iV$8%Omr
+    ports:
+      - "8081:8081"
+    networks:
+      - finance_network
 
   jaeger:
-    image: jaegertracing/all-in-one:1.52
+    image: jaegertracing/all-in-one:1.47
     container_name: jaeger
+    environment:
+      - COLLECTOR_ZIPKIN_HTTP_PORT=9411
     ports:
       - "16686:16686"
+      - "4317:4317"
+      - "4318:4318"
       - "14250:14250"
-      - "14268:14268"
     networks:
       - finance_network
 
 networks:
   finance_network:
-    name: finance_network
-    external: true
+    driver: bridge
+
+volumes:
+  pg_data:  # Том для хранения данных БД
