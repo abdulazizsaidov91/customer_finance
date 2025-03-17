@@ -5,6 +5,8 @@ import com.is.customerfinance.dto.request.AuthRequest;
 import com.is.customerfinance.dto.request.RefreshTokenRequest;
 import com.is.customerfinance.dto.response.AuthResponse;
 import com.is.customerfinance.exception.BadRequestException;
+import com.is.customerfinance.exception.ExpiredRefreshTokenException;
+import com.is.customerfinance.exception.RefreshTokenNotFoundException;
 import com.is.customerfinance.filter.JwtService;
 import com.is.customerfinance.model.RefreshToken;
 import com.is.customerfinance.service.CustomUserDetailsService;
@@ -56,11 +58,11 @@ public class AuthController {
     @PostMapping("/refresh")
     public ResponseEntity<AuthResponse> refresh(@RequestBody RefreshTokenRequest request) {
         RefreshToken refreshToken = refreshTokenService.findByToken(request.getRefreshToken())
-                .orElseThrow(() -> new RuntimeException("Invalid refresh token"));
+                .orElseThrow(RefreshTokenNotFoundException::new);
 
-        if (!refreshTokenService.isValid(refreshToken)) {
+        if (refreshTokenService.isExpired(refreshToken)) {
             refreshTokenService.deleteByUserId(refreshToken.getUser().getId());
-            throw new RuntimeException("Refresh token expired. Please log in again.");
+            throw new ExpiredRefreshTokenException();
         }
         String accessToken = jwtService.generateToken(
                 userDetailsService.loadUserByUsername(refreshToken.getUser().getUsername()),
@@ -73,7 +75,7 @@ public class AuthController {
     @PostMapping("/logout")
     public ResponseEntity<String> logout(@RequestBody RefreshTokenRequest request) {
         RefreshToken refreshToken = refreshTokenService.findByToken(request.getRefreshToken())
-                .orElseThrow(() -> new RuntimeException("Invalid refresh token"));
+                .orElseThrow(RefreshTokenNotFoundException::new);
         refreshTokenService.deleteByUserId(refreshToken.getUser().getId());
         return ResponseEntity.ok("Logout successful");
     }

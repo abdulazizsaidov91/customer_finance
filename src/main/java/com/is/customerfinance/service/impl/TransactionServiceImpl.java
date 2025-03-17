@@ -1,6 +1,7 @@
 package com.is.customerfinance.service.impl;
 
 import com.is.customerfinance.annatation.WriteTransactional;
+import com.is.customerfinance.exception.BadRequestException;
 import com.is.customerfinance.model.Customer;
 import com.is.customerfinance.model.Transaction;
 import com.is.customerfinance.repository.CustomerRepository;
@@ -37,7 +38,7 @@ public class TransactionServiceImpl implements TransactionService {
     @WriteTransactional
     public Transaction credit(UUID customerId, BigDecimal amount, Locale locale) {
         Customer customer = customerRepository.findById(customerId)
-                .orElseThrow(() -> new RuntimeException(localizationService.getMessage("insufficient.funds", locale)));
+                .orElseThrow(() -> new BadRequestException("Customer Not Found", localizationService.getMessage("customer.not.found", locale)));
 
         customer.setBalance(customer.getBalance().add(amount));
         customerRepository.save(customer);
@@ -55,10 +56,10 @@ public class TransactionServiceImpl implements TransactionService {
     @WriteTransactional
     public Transaction debit(UUID customerId, BigDecimal amount, Locale locale) {
         Customer customer = customerRepository.findById(customerId)
-                .orElseThrow(() -> new RuntimeException(localizationService.getMessage("customer.not.found", locale)));
+                .orElseThrow(() -> new BadRequestException("Customer Not Found", localizationService.getMessage("customer.not.found", locale)));
 
         if (customer.getBalance().compareTo(amount) < 0) {
-            throw new RuntimeException(localizationService.getMessage("insufficient.funds", locale));
+            throw new BadRequestException("Insufficient funds", localizationService.getMessage("insufficient.funds", locale));
         }
 
         customer.setBalance(customer.getBalance().subtract(amount));

@@ -3,6 +3,7 @@ package com.is.customerfinance.service;
 import com.is.customerfinance.model.Customer;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -15,7 +16,7 @@ public interface CustomerService {
 
     Customer createCustomer(Customer customer);
 
-    Customer updateCustomer(UUID id, Customer updatedCustomer);
+    Customer updateCustomer(UUID id, Customer updatedCustomer, Locale locale);
 
     void deleteCustomer(UUID id);
 }

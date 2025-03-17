@@ -18,8 +18,7 @@ spring:
       hibernate.connection.isolation: 2 # 2 = READ COMMITTED
       hibernate.default_schema: finance
   liquibase:
-    liquibase-schema: public
-    default-schema: public
+    liquibase-schema: liquibase
     change-log: classpath:db/changelog/db.changelog-master.xml
   autoconfigure:
     exclude: io.opentelemetry.instrumentation.spring.autoconfigure.instrumentation.annotations.InstrumentationAnnotationsAutoConfiguration
@@ -41,7 +40,7 @@ logging:
 
 otel:
   service:
-    name: customer-finance  # Имя сервиса, которое будет видно в Jaeger
+    name: ${OTEL_SERVICE_NAME:customer-finance}  # Имя сервиса, которое будет видно в Jaeger
   exporter:
     otlp:
       endpoint: http://jaeger:4317  # Адрес Jaeger в Docker

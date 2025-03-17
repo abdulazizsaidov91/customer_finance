@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.UUID;
 
 @RestController
@@ -40,8 +41,8 @@ public class CustomerController {
 
     @Operation(summary = "Изменение", description = "Изменение данных клиента по ID")
     @PutMapping("/{id}")
-    public ResponseEntity<Customer> updateCustomer(@PathVariable UUID id, @RequestBody Customer customer) {
-        return ResponseEntity.ok(customerService.updateCustomer(id, customer));
+    public ResponseEntity<Customer> updateCustomer(@PathVariable UUID id, @RequestBody Customer customer, Locale locale) {
+        return ResponseEntity.ok(customerService.updateCustomer(id, customer, locale));
     }
 
     @Operation(summary = "Удаление", description = "Удаление клиента по ID")

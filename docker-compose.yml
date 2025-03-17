@@ -19,9 +19,9 @@ services:
     image: jaegertracing/all-in-one:1.52
     container_name: jaeger
     ports:
-      - "16686:16686"  # UI
-      - "14250:14250"  # gRPC API
-      - "14268:14268"  # HTTP API
+      - "16686:16686"
+      - "14250:14250"
+      - "14268:14268"
     networks:
       - finance_network
 

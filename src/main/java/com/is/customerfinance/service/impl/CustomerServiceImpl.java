@@ -1,13 +1,16 @@
 package com.is.customerfinance.service.impl;
 
 import com.is.customerfinance.annatation.WriteTransactional;
+import com.is.customerfinance.exception.BadRequestException;
 import com.is.customerfinance.model.Customer;
 import com.is.customerfinance.repository.CustomerRepository;
 import com.is.customerfinance.service.CustomerService;
+import com.is.customerfinance.service.LocalizationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -15,6 +18,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class CustomerServiceImpl implements CustomerService {
     private final CustomerRepository customerRepository;
+    private final LocalizationService localizationService;
 
     @Override
     public List<Customer> getAllCustomers() {
@@ -39,14 +43,14 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     @WriteTransactional
-    public Customer updateCustomer(UUID id, Customer updatedCustomer) {
+    public Customer updateCustomer(UUID id, Customer updatedCustomer, Locale locale) {
         return customerRepository.findById(id)
                 .map(customer -> {
                     customer.setName(updatedCustomer.getName());
                     customer.setEmail(updatedCustomer.getEmail());
                     customer.setPhoneNumber(updatedCustomer.getPhoneNumber());
                     return customerRepository.save(customer);
-                }).orElseThrow(() -> new RuntimeException("Customer not found"));
+                }).orElseThrow(() -> new BadRequestException("Customer Not Found", localizationService.getMessage("customer.not.found", locale)));
     }
 
     @WriteTransactional

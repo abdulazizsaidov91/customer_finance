@@ -52,7 +52,7 @@ public class UserServiceImpl implements UserService {
 
         String hashedPassword = passwordEncoder.encode(request.getPassword());
         Set<Role> userRoles = request.getRoles().stream()
-                .map(roleName -> roleRepository.findByName(roleName)
+                .map(roleName -> roleRepository.findByNameIgnoreCase(roleName)
                         .orElseThrow(() -> new BadRequestException("Invalid datas", "Роль " + roleName + " не найдена"))
                 )
                 .collect(Collectors.toSet());

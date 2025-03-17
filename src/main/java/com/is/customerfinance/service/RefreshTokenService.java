@@ -42,7 +42,7 @@ public class RefreshTokenService {
         refreshTokenRepository.deleteByUserId(userId);
     }
 
-    public boolean isValid(RefreshToken refreshToken) {
-        return refreshToken.getExpiryDate().isAfter(Instant.now());
+    public boolean isExpired(RefreshToken refreshToken) {
+        return !refreshToken.getExpiryDate().isAfter(Instant.now());
     }
 }
