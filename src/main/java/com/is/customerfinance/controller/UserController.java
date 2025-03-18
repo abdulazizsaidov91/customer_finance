@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.UUID;
 
 @RestController
@@ -34,15 +35,15 @@ public class UserController {
     }
 
     @Operation(summary = "Создание", description = "Создание пользователя")
-    @PostMapping
+    @PostMapping("/create")
     public ResponseEntity<User> createUser(@RequestBody UserCreateRequest request) {
         return ResponseEntity.ok(userService.createUser(request));
     }
 
     @Operation(summary = "Изменение", description = "Изменение данных пользователя по ID")
-    @PutMapping("/{id}")
-    public ResponseEntity<User> updateUser(@PathVariable UUID id, @RequestBody User user) {
-        return ResponseEntity.ok(userService.updateUser(id, user));
+    @PutMapping("/update/{id}")
+    public ResponseEntity<User> updateUser(@PathVariable UUID id, @RequestBody User user, Locale locale) {
+        return ResponseEntity.ok(userService.updateUser(id, user, locale));
     }
 
     @Operation(summary = "Удаление", description = "Удаление пользователя по ID")

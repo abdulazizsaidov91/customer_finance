@@ -1,6 +1,7 @@
 package com.is.customerfinance.service;
 
 import com.is.customerfinance.annatation.WriteTransactional;
+import com.is.customerfinance.exception.BadRequestException;
 import com.is.customerfinance.model.RefreshToken;
 import com.is.customerfinance.repository.RefreshTokenRepository;
 import com.is.customerfinance.repository.UserRepository;
@@ -26,7 +27,7 @@ public class RefreshTokenService {
     @WriteTransactional
     public RefreshToken createRefreshToken(UUID userId, Locale locale) {
         RefreshToken refreshToken = RefreshToken.builder()
-                .user(userRepository.findById(userId).orElseThrow(() -> new RuntimeException(localizationService.getMessage("user.not.found", locale))))
+                .user(userRepository.findById(userId).orElseThrow(() -> new BadRequestException("Not Found", localizationService.getMessage("user.not.found", locale))))
                 .token(UUID.randomUUID().toString())
                 .expiryDate(Instant.now().plusMillis(refreshTokenExpiration))
                 .build();

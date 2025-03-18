@@ -4,6 +4,7 @@ import com.is.customerfinance.dto.request.UserCreateRequest;
 import com.is.customerfinance.model.User;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -16,7 +17,7 @@ public interface UserService {
 
     User createUser(UserCreateRequest request);
 
-    User updateUser(UUID id, User updatedUser);
+    User updateUser(UUID id, User updatedUser, Locale locale);
 
     void deleteUser(UUID id);
 }

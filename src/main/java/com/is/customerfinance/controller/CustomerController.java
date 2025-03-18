@@ -34,13 +34,13 @@ public class CustomerController {
     }
 
     @Operation(summary = "Создание", description = "Создание клиента")
-    @PostMapping
+    @PostMapping("/create")
     public ResponseEntity<Customer> createCustomer(@RequestBody Customer customer) {
         return ResponseEntity.ok(customerService.createCustomer(customer));
     }
 
     @Operation(summary = "Изменение", description = "Изменение данных клиента по ID")
-    @PutMapping("/{id}")
+    @PutMapping("/update/{id}")
     public ResponseEntity<Customer> updateCustomer(@PathVariable UUID id, @RequestBody Customer customer, Locale locale) {
         return ResponseEntity.ok(customerService.updateCustomer(id, customer, locale));
     }

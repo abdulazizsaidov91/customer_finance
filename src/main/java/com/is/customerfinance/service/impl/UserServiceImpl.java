@@ -8,16 +8,14 @@ import com.is.customerfinance.model.Role;
 import com.is.customerfinance.model.User;
 import com.is.customerfinance.repository.RoleRepository;
 import com.is.customerfinance.repository.UserRepository;
+import com.is.customerfinance.service.LocalizationService;
 import com.is.customerfinance.service.UserService;
 import com.is.customerfinance.util.Utils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -26,6 +24,7 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
+    private final LocalizationService localizationService;
 
     @Override
     @ReadTransactional
@@ -58,7 +57,7 @@ public class UserServiceImpl implements UserService {
                 .collect(Collectors.toSet());
         var user = new User();
         user.setId(UUID.randomUUID());
-        user.setUsername(request.getUserName());
+        user.setUsername(request.getUserName().toLowerCase());
         user.setPassword(hashedPassword);
         user.setRoles(userRoles);
         return userRepository.save(user);
@@ -78,14 +77,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @WriteTransactional
-    public User updateUser(UUID id, User updatedUser) {
+    public User updateUser(UUID id, User updatedUser, Locale locale) {
         return userRepository.findById(id)
                 .map(user -> {
                     user.setUsername(updatedUser.getUsername());
                     user.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
                     user.setRoles(updatedUser.getRoles());
                     return userRepository.save(user);
-                }).orElseThrow(() -> new RuntimeException("User not found"));
+                }).orElseThrow(() -> new BadRequestException("Not Found", localizationService.getMessage("user.not.found", locale)));
     }
 
     @Override

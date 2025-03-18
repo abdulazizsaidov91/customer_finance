@@ -41,7 +41,7 @@ public class AuthController {
     public ResponseEntity<AuthResponse> authenticate(@RequestBody AuthRequest request, Locale locale) {
         try {
             authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword())
+                    new UsernamePasswordAuthenticationToken(request.getUsername().toLowerCase(), request.getPassword())
             );
 
             UserDetails userDetails = userDetailsService.loadUserByUsername(request.getUsername());

@@ -4,9 +4,9 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
 
-<!--    <changeSet id="000-create-schemas" author="Saidov.A">-->
-<!--        <sqlFile path="db/changelog/scripts/V0__create_schemas.sql"/>-->
-<!--    </changeSet>-->
+    <changeSet id="000-create-schemas" author="Saidov.A">
+        <sqlFile path="db/changelog/scripts/V0__create_schemas.sql"/>
+    </changeSet>
 
     <changeSet id="001-create-users" author="Saidov.A">
         <sqlFile path="db/changelog/scripts/V1__create_users.sql"/>
