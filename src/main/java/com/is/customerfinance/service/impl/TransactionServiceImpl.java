@@ -1,6 +1,7 @@
 package com.is.customerfinance.service.impl;
 
 import com.is.customerfinance.annatation.WriteTransactional;
+import com.is.customerfinance.enums.TransactionType;
 import com.is.customerfinance.exception.BadRequestException;
 import com.is.customerfinance.model.Customer;
 import com.is.customerfinance.model.Transaction;
@@ -46,6 +47,7 @@ public class TransactionServiceImpl implements TransactionService {
         Transaction transaction = Transaction.builder()
                 .customer(customer)
                 .amount(amount)
+                .transactionType(TransactionType.CREDIT.getId())
                 .timestamp(LocalDateTime.now())
                 .build();
 
@@ -61,13 +63,13 @@ public class TransactionServiceImpl implements TransactionService {
         if (customer.getBalance().compareTo(amount) < 0) {
             throw new BadRequestException("Insufficient funds", localizationService.getMessage("insufficient.funds", locale));
         }
-
         customer.setBalance(customer.getBalance().subtract(amount));
-        customerRepository.save(customer);
 
+        customerRepository.save(customer);
         Transaction transaction = Transaction.builder()
                 .customer(customer)
                 .amount(amount.negate())
+                .transactionType(TransactionType.DEBIT.getId())
                 .timestamp(LocalDateTime.now())
                 .build();
 

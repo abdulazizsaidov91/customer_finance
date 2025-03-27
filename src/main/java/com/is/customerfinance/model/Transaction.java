@@ -27,4 +27,7 @@ public class Transaction {
 
     @Column(nullable = false)
     private LocalDateTime timestamp;
+
+    @Column(name = "transaction_type",nullable = false)
+    private Short transactionType;
 }

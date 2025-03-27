@@ -35,4 +35,12 @@
     <changeSet id="007-insert-user-role-userrole" author="Saidov.A">
         <sqlFile path="db/changelog/scripts/V7__insert_user_role_userrole.sql"/>
     </changeSet>
+
+    <changeSet id="008-create-transaction-type" author="Saidov.A">
+        <sqlFile path="db/changelog/scripts/V8__create_transaction_type.sql"/>
+    </changeSet>
+
+    <changeSet id="009-add-column-transaction-type" author="Saidov.A">
+        <sqlFile path="db/changelog/scripts/V9__add_column_transactions.sql"/>
+    </changeSet>
 </databaseChangeLog>
